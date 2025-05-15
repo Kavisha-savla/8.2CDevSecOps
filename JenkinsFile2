@@ -13,7 +13,10 @@ pipeline {
  }
  stage('Run Tests') {
  steps {
- bat 'npm test || true' // Allows pipeline to continue despite test failures
+catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+    bat 'npm test'
+}
+
  }
  }
  stage('Generate Coverage Report') {
