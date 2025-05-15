@@ -1,32 +1,38 @@
 pipeline {
- agent any
- stages {
-   stage('Checkout') {
-     steps {
-       git branch: 'main', url: 'https://github.com/Kavisha-savla/8.2CDevSecOps.git'
-     }
-   }
-   stage('Install Dependencies') {
-     steps {
-       bat 'npm install'
-     }
-   }
-   stage('Run Tests') {
-     steps {
-       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-         bat 'npm test'
-       }
-     }
-   }
-   stage('Generate Coverage Report') {
-     steps {
-       echo 'Coverage stage skipped because no coverage script defined'
-     }
-   }
-   stage('NPM Audit (Security Scan)') {
-     steps {
-       bat 'npm audit || true' // This will show known CVEs in the output
-     }
-   }
- }
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Kavisha-savla/8.2CDevSecOps.git'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                bat 'npm install'
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    bat 'npm test'
+                }
+            }
+        }
+        stage('Generate Coverage Report') {
+            steps {
+                echo 'Coverage stage skipped because no coverage script defined'
+            }
+        }
+        stage('NPM Audit (Security Scan)') {
+            steps {
+                bat 'npm audit || exit 0'
+            }
+        }
+        stage('Snyk Security Test') {
+            steps {
+                bat 'snyk auth 68d8e2ee-7f0a-4dd9-bc5f-93a9a24f5954'
+                bat 'snyk test || exit 0'
+            }
+        }
+    }
 }
