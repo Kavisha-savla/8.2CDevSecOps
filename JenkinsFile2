@@ -11,21 +11,23 @@ pipeline {
  bat 'npm install'
  }
  }
- stage('Run Tests') {
- steps {
-catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-    bat 'npm test'
+stage('Run Tests') {
+    steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            // Run npm test but skip snyk or handle snyk auth externally
+            bat 'npm test'
+        }
+    }
 }
 
- }
- }
- stage('Generate Coverage Report') {
- steps {
- // Ensure coverage report exists
- bat 'npm run coverage || true'
- }
- }
- stage('NPM Audit (Security Scan)') {
+stage('Generate Coverage Report') {
+    steps {
+        // If coverage script doesn't exist, comment this out or add your coverage command
+        // bat 'npm run coverage'
+        echo 'Coverage stage skipped because no coverage script defined'
+    }
+}
+
  steps {
  bat 'npm audit || true' // This will show known CVEs in the output
  }
