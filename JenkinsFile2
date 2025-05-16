@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git(
-                    url: 'https://github.com/your_github_username/8.2CDevSecOps.git',
+                    url: 'https://github.com/Kavisha-savla/8.2CDevSecOps.git',
                     branch: 'main',
                     credentialsId: 'Kavisha-savla'  // Use your Jenkins stored GitHub PAT credential ID here
                 )
