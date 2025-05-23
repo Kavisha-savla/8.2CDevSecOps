@@ -6,7 +6,7 @@ pipeline {
  git branch: 'main', url: 'https://github.com/Kavisha-savla/8.2CDevSecOps.git'
  }
  }
- stage('Install Dependencies') {
+ stage('Install Dependencies') { 
  steps {
  bat 'npm install'
  }
